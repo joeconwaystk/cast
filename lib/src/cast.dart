@@ -112,19 +112,19 @@ class List<E> extends Cast<core.List<E>> {
 }
 
 class Keyed<K, V> extends Cast<core.Map<K, V>> {
+  Iterable<K> get keys => _map.keys;
   final core.Map<K, Cast<V>> _map;
-  final Cast<V> _otherwise;
-  const Keyed(core.Map<K, Cast<V>> map, {Cast<V> otherwise})
-      : _map = map,
-        _otherwise = otherwise;
+  const Keyed(core.Map<K, Cast<V>> map)
+      : _map = map;
   core.Map<K, V> _cast(dynamic from, core.String context, dynamic key) {
     core.Map<K, V> result = {};
     if (from is core.Map) {
       for (K key in from.keys) {
-        var entry = _map[key] ?? _otherwise;
-        if (entry == null)
-          throw new FailedCast("map entry", key, "key not found");
-        result[key] = entry._cast(from[key], "map entry", key);
+        if (_map.containsKey(key)) {
+          result[key] = _map[key]._cast(from[key], "map entry", key);
+        } else {
+          result[key] = from[key];
+        }
       }
       return result;
     }

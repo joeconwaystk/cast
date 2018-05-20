@@ -44,7 +44,7 @@ void main() {
       "fields": cast.Keyed({"field1": cast.int, "field2": cast.int}),
       "extra1": cast.OneOf(cast.String, cast.List(cast.String)),
       "extra2": cast.OneOf(cast.String, cast.List(cast.String)),
-    }, otherwise: cast.any);
+    });
     var result = typed.cast(json);
 
     expect(result is Map<String, dynamic>, isTrue);
